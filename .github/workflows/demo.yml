@@ -25,6 +25,7 @@ jobs:
         run: npm ci
       - name: Build website
         run: npm run build
+      # upload the provided path and zip it so we can use it or download it
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -36,5 +37,12 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Get build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          # the name in here should be the same in the Upload artifact step
+          name: dist-files
+      - name: Output content
+        run: ls
       - name: Deploy
         run: echo "Deploying..."
